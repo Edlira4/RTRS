@@ -1,0 +1,14 @@
+**ALBOSETS PROJECT!***
+
+**Database Name: albosetsphp**
+
+**Developed by Edlira Daku**
+
+**Recommended PHP Version: 5.6, 7.4, 8.1**
+
+
+**Admin Login Details**
+
+Email   : edlira2019@mail.com
+Password: 44224422
+
