@@ -1,0 +1,3311 @@
+**LOG IN DETAILS AND INFO**
+**ALBOSETS PROJECT!***
+
+**Database Name: albosetsphp**
+
+**Developed by Edlira Daku**
+
+**Recommended PHP Version: 5.6, 7.4, 8.1**
+
+
+**Admin Login Details**
+
+Email   : edlira2019@mail.com
+Password: 44224422
+
+**Employee Login Details**
+
+Email   : asokolaj@mail.com
+Password: 12345
+
+
+**Traveler/ANA's Login Details**
+
+Email   : aballa@mail.com
+Password: 23456
+
+
+**Traveler/ENESH's Login Details**
+
+Email   : eorazova@mail.com
+Password: 34567
+
+**Traveler/Brajan's Login Details**
+
+Email   : bxheku@mail.com
+Password: 45678
+
+**Traveler/Aida's Login Details**
+
+Email   : abitri@mail.com
+Password: 56789
+..... if more needed- contact creator at edaku21@epoka.edu.al
+
+
+
+
+**INDEX**
+<!DOCTYPE HTML>
+<!--
+	Online Railway Reservation System
+	edaku21@epoka.edu.al | Edlira Daku
+	(html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Online Railway Reservation System</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="includes/css/main.css" />
+		<noscript><link rel="stylesheet" href="includes/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<h1><a href="index.php">ALBOSETS</a></h1>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<div class="inner">
+							<h2>Menu</h2>
+							<ul class="links">
+								<li><a href="index.php">Home</a></li>
+								<li><a href="pass-login.php">Make Reservation</a></li>
+								<li><a href="employee/emp-login.php">Employee Login</a></li>
+								<li><a href="admin/emp-login.php">Admin Login</a></li>
+							</ul>
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+
+				<!-- Banner -->
+					<section id="banner">
+						<div class="inner">
+							<div class="logo"><span class="icon solid fa-train"></span></div>
+							<h2>ALBOSETS-Online Railway Reservation System</h2>
+							<p>ALBOS, E-TRANSPORT SYSTEM. Life's a train, get on board</a></p>
+						</div>
+					</section>
+
+					<section id="footer">
+						<div class="inner">
+							<h2 class="major">Get in touch</h2>
+							
+							<ul class="contact">
+								<li class="icon solid fa-home">
+									Online Railway Reservation System<br />
+									PHP Project<br />
+									
+								</li>
+								<li class="icon solid fa-phone">(+355) 69 99 33-541</li>
+								<li class="icon solid fa-envelope"><a href="#">mail@albosets.com</a></li>
+								<li class="icon brands fa-twitter"><a href="#">twitter.com/albosets</a></li>
+								<li class="icon brands fa-facebook-f"><a href="#">facebook.com/albosets</a></li>
+								<li class="icon brands fa-instagram"><a href="#">instagram.com/albosets</a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; ALBOSETS-Online Railway Reservation System.</li><li>Developed By: EDLIRA DAKU</li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="includes/js/jquery.min.js"></script>
+			<script src="includes/js/jquery.scrollex.min.js"></script>
+			<script src="includes/js/browser.min.js"></script>
+			<script src="includes/js/breakpoints.min.js"></script>
+			<script src="includes/js/util.js"></script>
+			<script src="includes/js/main.js"></script>
+
+	</body>
+</html>
+
+**PASS-ALL-AVAILABLE TRAINS**
+<!--Server side scripting  code to hold  user session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End server side code-->
+<!DOCTYPE html>
+<html lang="en">
+  <!--Head-->
+    <?php include('assets/inc/head.php');?>
+  <!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--Navbar-->
+      <?php include("assets/inc/navbar.php");?>
+      <!--End Navbar-->
+        <!--Navbar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Trains</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Trains</a></li>
+              <li class="breadcrumb-item active">Available Trains</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card card-table">
+                <div class="card-header">Available Trains
+                </div>
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>#</th>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Total Passengers</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+          
+                        $ret="SELECT * FROM albosets_train ";
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        $cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                    ?>
+                        <tr class="odd gradeX even gradeC odd gradeA ">
+                            <td><?php echo $cnt;?></td>
+                            <td><?php echo $row->number;?></td>
+                            <td><?php echo $row->name;?></td>
+                            <td><?php echo $row->route;?></td>
+                            <td><?php echo $row->current;?></td>
+                            <td><?php echo $row->destination;?></td>
+                            <td><?php echo $row->time;?></td>
+                            <td>$<?php echo $row->fare;?></td>
+                            <td><?php echo $row->passengers;?><td>
+                        </tr>
+                    <?php $cnt = $cnt+1; }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <!--Footer-->
+      <?php include('assets/inc/footer.php');?>
+      <!--End Footer-->
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+  </body>
+
+</html>
+
+
+**PASS-BOOK-SPECIFIC-TRAIN**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['Book_Train']))
+    {
+
+            /*
+            *We have already captured this passenger details....so no need of getting them again.     
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+            //$passwordconf=md5($_POST['passwordconf']);
+            //$date = date('d-m-Y h:i:s', time());
+            */
+            $pass_train_number = $_POST['pass_train_number'];
+            $pass_train_name = $_POST['pass_train_name'];
+            $pass_dep_station = $_POST['pass_dep_station'];
+            $pass_dep_time = $_POST['pass_dep_time'];
+            $pass_arr_station = $_POST['pass_arr_station'];
+            $pass_train_fare = $_POST['pass_train_fare'];
+            //sql file to update the table of passengers with the new captured information
+            $query="update  albosets_passenger set pass_train_number = ?, pass_train_name = ?, pass_dep_station = ?, pass_dep_time = ?,  pass_arr_station = ?, pass_train_fare = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query); //prepare sql and bind it later
+            $rc=$stmt->bind_param('ssssssi', $pass_train_number, $pass_train_name, $pass_dep_station, $pass_dep_time, $pass_arr_station, $pass_train_fare, $aid);
+            $stmt->execute();
+            if($stmt)
+            {
+                $succ = "Reserved Train PLease Proceed To Check Out";
+            }
+            else 
+            {
+                $err = "Please Try Again Later";
+            }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Book Train </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Book Train</a></li>
+              <li class="breadcrumb-item active">Reserve Seat</li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider"><span class="card-subtitle">Fill All Details</span></div>
+                <div class="card-body">
+                  <form method ="POST">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> First Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_fname" value="<?php echo $row->pass_fname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Last Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_lname" value="<?php echo $row->pass_lname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Phone Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_phone" value="<?php echo $row->pass_phone;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Address</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_addr" value="<?php echo $row->pass_addr;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+
+                    <!--Lets get the details of one single train using its Train Id 
+                    and pass it to this user instance-->
+                    <?php
+                        $id=$_GET['id'];
+                        $ret="select * from albosets_train where id=?";
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->bind_param('i',$id);
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        //$cnt=1;
+                        while($row=$res->fetch_object())
+                    {
+                    ?>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_number" value="<?php echo $row->number;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_name" value="<?php echo $row->name;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Departure</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_dep_station" value="<?php echo $row->current;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Arrival </label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_arr_station" value="<?php echo $row->destination;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Departure Time</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_dep_time" value="<?php echo $row->time;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Fare</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_fare" value="<?php echo $row->fare;?>"  id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <!--End TRain  isntance-->
+                    <?php }?>
+
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-outline-success" value ="Book Train" name = "Book_Train" type="submit">
+                          <button class="btn btn-space btn-outline-danger">Cancel</button>
+                        </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+       
+        <?php }?>
+        
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-BOOK-TRAIN**
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">Book Train</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Book Train</a></li>
+              <li class="breadcrumb-item active">Reserve Train</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+                <div class="card-header">Please Book Your Train Accordingly                  
+                </div>
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        /*
+                        *Lets get details of available trains!!
+                        */
+                        $ret="SELECT * FROM albosets_train  "; //sql code to get all details of trains.
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        $cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                    ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->number;?></td>
+                        <td><?php echo $row->name;?></td>
+                        <td><?php echo $row->route;?></td>
+                        <td class="center"><?php echo $row->current;?></td>
+                        <td class="center"><?php echo $row->destination;?></td>
+                        <td class="center"><?php echo $row->time;?></td>
+                        <td class="center">$<?php echo $row->fare;?></td>
+                        <td class="center">
+                        <a href="pass-book-specific-train.php?id=<?php echo $row->id?>"><button class="btn btn-success btn-sm">Book</button></a>
+                        </td>
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         <!--footer-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-CANCEL-SPECIFIC-TRAIN**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['Cancel_Train']))
+    {
+
+            /*
+            *We have already captured this passenger details....so no need of getting them again.     
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+            //$passwordconf=md5($_POST['passwordconf']);
+            //$date = date('d-m-Y h:i:s', time());
+            */
+            $pass_train_number = $_POST['pass_train_number'];
+            $pass_train_name = $_POST['pass_train_name'];
+            $pass_dep_station = $_POST['pass_dep_station'];
+            $pass_dep_time = $_POST['pass_dep_time'];
+            $pass_arr_station = $_POST['pass_arr_station'];
+            $pass_train_fare = $_POST['pass_train_fare'];
+            //sql file to update the table of passengers with the new captured information
+            $query="update  albosets_passenger set pass_train_number = ?, pass_train_name = ?, pass_dep_station = ?, pass_dep_time = ?,  pass_arr_station = ?, pass_train_fare = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query); //prepare sql and bind it later
+            $rc=$stmt->bind_param('ssssssi', $pass_train_number, $pass_train_name, $pass_dep_station, $pass_dep_time, $pass_arr_station, $pass_train_fare, $aid);
+            $stmt->execute();
+            if($stmt)
+            {
+                $succ = "Reserved Train Cancelled";
+            }
+            else 
+            {
+                $err = "Please Try Again Later";
+            }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Canel My Train </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Book Train</a></li>
+              <li class="breadcrumb-item active">Cancel Train</li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-primary">
+                <div class="card-header card-header-divider"><span class="card-subtitle">Fill All Details</span></div>
+                <div class="card-body">
+                  <form method ="POST">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My First Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_fname" value="<?php echo $row->pass_fname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Last Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_lname" value="<?php echo $row->pass_lname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Phone Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_phone" value="<?php echo $row->pass_phone;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Address</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_addr" value="<?php echo $row->pass_addr;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+
+                    <!--Lets get the details of one single train using its Train Id 
+                    and pass it to this user instance-->
+                    <?php
+                        $id=$_GET['pass_id'];
+                        $ret="select * from albosets_passenger where pass_id=?";
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->bind_param('i',$id);
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        //$cnt=1;
+                        while($row=$res->fetch_object())
+                    {
+                    ?>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_number" placeholder="<?php echo $row->pass_train_number;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_name" placeholder="<?php echo $row->pass_train_name;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Departure Station</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_dep_station" placeholder="<?php echo $row->pass_dep_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Arrival Station</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_arr_station" placeholder="<?php echo $row->pass_arr_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">My Departure Time</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_dep_time" placeholder="<?php echo $row->pass_dep_time;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Fare</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_train_fare" placeholder="<?php echo $row->pass_train_fare;?>"  id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <!--End TRain  isntance-->
+                    <?php }?>
+
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-outline-primary" value ="Cancel Train" name = "Cancel_Train" type="submit">
+                          <button class="btn btn-space btn-secondary">Cancel</button>
+                        </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+       
+        <?php }?>
+        
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+***\PASS-CANCEL-TRAIN*
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!--Log on to codeastro.com for more projects!-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">Cancel Train</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Book Train</a></li>
+              <li class="breadcrumb-item active">Cancel Train Booking</li>
+            </ol>
+          </nav>
+        </div>
+		<!--Log on to codeastro.com for more projects!-->
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+                <div class="card-header">Canel Your Train Booking                 
+                </div>
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        /**
+                         *Lets select train booking details of logged in user using PASSENGER ID as the session
+                         */
+                            $aid=$_SESSION['pass_id'];
+                            $ret="select * from albosets_passenger where pass_id=?";//sql to get details of our user
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('i',$aid);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            //$cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                        ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->pass_train_number;?></td>
+                        <td><?php echo $row->pass_train_name;?></td>
+                        <td class="center"><?php echo $row->pass_dep_station;?></td>
+                        <td class="center"><?php echo $row->pass_arr_station;?></td>
+                        <td class="center"><?php echo $row->pass_dep_time;?></td>
+                        <td class="center">$<?php echo $row->pass_train_fare;?></td>
+                        <td class="center">
+                            <a href="pass-cancel-specific-train.php?pass_id=<?php echo $row->pass_id?>"><button class="btn btn-danger btn-sm">Cancel</button></a>  
+                        </td>
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         <!--Log on to codeastro.com for more projects!-->
+         <!--footer-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-CHECKOUT-TICKET**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['train_fare_checkout']))
+    {
+
+            /*
+            *We have already captured this passenger details....so no need of getting them again.     
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+            //$passwordconf=md5($_POST['passwordconf']);
+            //$date = date('d-m-Y h:i:s', time());
+            $pass_train_number = $_POST['pass_train_number'];
+            $pass_train_name = $_POST['pass_train_name'];
+            $pass_dep_station = $_POST['pass_dep_station'];
+            $pass_dep_time = $_POST['pass_dep_time'];
+            $pass_arr_station = $_POST['pass_arr_station'];
+            */
+            
+            $pass_fare_payment_code = $_POST['pass_fare_payment_code'];
+            //sql file to update the table of passengers with the new captured information
+            $query="update  albosets_passenger set pass_fare_payment_code = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query); //prepare sql and bind it later
+            $rc=$stmt->bind_param('si', $pass_fare_payment_code, $aid);
+            $stmt->execute();
+            if($stmt)
+            {
+                $succ = "Ticket Paid Please Proceed To Confirm Your Payment";
+            }
+            else 
+            {
+                $err = "Please Try Again Later";
+            }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Train Tickt Checkout </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Tickets</a></li>
+              <li class="breadcrumb-item"><a href="#">Checkout</a></li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider"><span class="card-subtitle">Fill All Details</span></div>
+                <div class="card-body">
+                  <form method ="POST">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> First Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_fname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Last Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_lname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Phone Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly value="<?php echo $row->pass_phone;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Address</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_addr;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Booked Train Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_train_number;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Booked Train Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_train_name;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Departure </label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_dep_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Arrival </label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_arr_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>                   
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Fare</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  value="<?php echo $row->pass_train_fare;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Payment Code</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" value = "<?php echo $row->pass_fare_payment_code;?>" name= "pass_fare_payment_code"  id="inputText3" type="text">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-success" value ="Checkout" name = "train_fare_checkout" type="submit">
+                          <button class="btn btn-space btn-danger">Cancel</button>
+                        </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+       
+        <?php }?>
+        
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-CONFIRM-CHECKOUT-TICKET**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['train_fare_confirm_checkout']))
+    {
+     
+            $pass_name=$_POST['pass_name'];
+            //$pass_lname = $_POST['pass_lname'];
+            //$pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];        
+            $train_name = $_POST['train_name'];
+            $train_no = $_POST['train_no'];
+            $train_dep_stat = $_POST['train_dep_stat'];
+            $train_arr_stat = $_POST['train_arr_stat'];
+            $train_fare = $_POST['train_fare'];
+            $fare_payment_code = $_POST['fare_payment_code'];
+            //sql file to update the table of passengers with the new captured information
+            $query="insert into albosets_train_tickets (pass_name, pass_addr, pass_email, train_name, train_no, train_dep_stat, train_arr_stat,  train_fare, fare_payment_code) values (?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($query); //prepare sql and bind it later
+            $rc=$stmt->bind_param('sssssssss', $pass_name, $pass_addr, $pass_email, $train_name, $train_no, $train_dep_stat, $train_arr_stat, $train_fare, $fare_payment_code);
+            $stmt->execute();
+            if($stmt)
+            {
+                $succ = "Ticket Payment Confirmed";
+            }
+            else 
+            {
+                $err = "Please Try Again Later";
+            }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+		<!--Log on to codeastro.com for more projects!-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Train Tickt Checkout </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Tickets</a></li>
+              <li class="breadcrumb-item"><a href="#">Checkout</a></li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider"><span class="card-subtitle"></span></div>
+                <div class="card-body">
+                  <form method ="POST">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_name"  value="<?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Email</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="pass_email"  value="<?php echo $row->pass_email;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Address</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name= "pass_addr"  value="<?php echo $row->pass_addr;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Booked Train Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="train_no"  value="<?php echo $row->pass_train_number;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Booked Train Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name="train_name"  value="<?php echo $row->pass_train_name;?>" id="inputText3" type="text">
+                      </div>
+                    </div><!--Log on to codeastro.com for more projects!-->
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Departure </label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly  name = "train_dep_stat" value="<?php echo $row->pass_dep_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Arrival </label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name = "train_arr_stat" value="<?php echo $row->pass_arr_station;?>" id="inputText3" type="text">
+                      </div>
+                    </div>                   
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Train Fare</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name = "train_fare"  value="<?php echo $row->pass_train_fare;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Payment Code</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" readonly name ="fare_payment_code" value = "<?php echo $row->pass_fare_payment_code;?>" name= "pass_fare_payment_code"  id="inputText3" type="text">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-success" value ="Confirm Payment" name = "train_fare_confirm_checkout" type="submit">
+                          <button class="btn btn-space btn-secondary">Cancel</button>
+                        </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+       
+        <?php }?>
+        
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-CONFIRM-TICKET**
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">Confirm Checkout Tickets</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="">Train Tickets</a></li>
+              <li class="breadcrumb-item active">Confirm Checkout</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+              
+              <?php
+              /**
+               * We need to get firstname or username of logged in user!!
+               */         
+                $aid=$_SESSION['pass_id'];
+                $ret="select * from albosets_passenger where pass_id=?";
+                $stmt= $mysqli->prepare($ret) ;
+                $stmt->bind_param('i',$aid);
+                $stmt->execute() ;//ok
+                $res=$stmt->get_result();
+                //$cnt=1;
+                while($row=$res->fetch_object())
+                 {
+                    ?>
+                <div class="card-header"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?>  This Is Your Booked Train Ticket Proceed to Confirm checkout your ticket!   
+                <?php }?>             
+                </div>
+
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Payment Code</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        /**
+                         *Lets select train booking details of logged in user using PASSENGER ID as the session
+                         */
+                            //$aid=$_SESSION['pass_id'];
+                            $ret="SELECT * from albosets_passenger WHERE pass_id=? && pass_fare_payment_code !=''";//sql to get details of our user
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('i',$aid);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            //$cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                        ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->pass_train_number;?></td>
+                        <td><?php echo $row->pass_train_name;?></td>
+                        <td class="center"><?php echo $row->pass_dep_station;?></td>
+                        <td class="center"><?php echo $row->pass_arr_station;?></td>
+                        <td class="center"><?php echo $row->pass_dep_time;?></td>
+                        <td class="center">$<?php echo $row->pass_train_fare;?></td>
+                        <td class="center"><?php echo $row->pass_fare_payment_code;?></td>
+                        <td class="center"><a href="pass-confirm-checkout-ticket.php?pass_id = <?php echo $row->pass_id;?>"><button class="btn btn-sm btn-success">Confirm Payment</button></a></td>
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         <!--footer-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-DASHBOARD**
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <!--Head-->
+  <?php include("assets/inc/head.php");?>
+  <!--End Head-->
+  <!--Log on to codeastro.com for more projects!-->
+  <body>
+
+    <div class="be-wrapper be-fixed-sidebar">
+
+    <!--Navbar-->
+     <?php include("assets/inc/navbar.php");?>
+      <!--End Nav Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+		<!--Log on to codeastro.com for more projects!-->
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="row">
+            
+            <div class="col-12 col-lg-6 col-xl-4">
+              <a href="pass-my-booked-train.php">
+                <div class="widget widget-tile">
+                  <div class="chart sparkline"><i class="material-icons">add_shopping_cart</i></div>
+                  <div class="data-info">
+                    <div class="desc">Booked Train</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-4">
+              <a href="pass-cancel-train.php">
+                  <div class="widget widget-tile">
+                    <div class="chart sparkline"><i class ="material-icons">backspace</i></div>
+                    <div class="data-info">
+                      <div class="desc">Cancel Booking</div>
+                    </div>
+                  </div>
+              </a>
+            </div>
+			<!--Log on to codeastro.com for more projects!-->
+            <div class="col-12 col-lg-6 col-xl-4">
+              <a href="pass-print-ticket.php">
+                <div class="widget widget-tile">
+                  <div class="chart sparkline" ><i class ="material-icons">burst_mode</i></div>
+                  <div class="data-info">
+                    <div class="desc">Tickets</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+                <div class="card-header">Available Trains
+                
+                  <div class="tools dropdown"><span class=""></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class=""></span></a>
+                    
+                  </div>
+                </div>
+                <div class="card-body">
+                <!--Start Table-->
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Total Seat</th>
+                        <th>Fare</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+
+                        $ret="SELECT * FROM albosets_train ORDER BY RAND() LIMIT 10 "; //sql code to get to ten trains randomly
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        $cnt=1;
+                        while($row=$res->fetch_object())
+                      {
+                      ?>
+                          <tr class="odd gradeX even gradeC odd gradeA ">
+                            <td><?php echo $row->number;?></td>
+                            <td><?php echo $row->name;?></td>
+                            <td><?php echo $row->route;?></td>
+                            <td><?php echo $row->current;?></td>
+                            <td><?php echo $row->destination;?></td>
+                            <td><?php echo $row->time;?></td>
+                            <td><?php echo $row->passengers;?></td>
+                            <td>$<?php echo $row->fare;?></td>
+                          </tr>
+
+                      <?php $cnt=$cnt+1; }?>
+                    </tbody>
+                  </table>
+                  <!--eND Table-->
+                </div>
+              </div>
+            </div>
+          </div>
+         <!--Log on to codeastro.com for more projects!-->
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+     
+    </div>
+
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.pie.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.time.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.resize.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/jquery.flot.orderBars.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/curvedLines.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/jquery.flot.tooltip.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="assets/lib/countup/countUp.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jqvmap/jquery.vmap.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dashboard();
+      
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-LOGIN**
+<!-- Server side code for log in-->
+<?php
+    session_start();
+    include('assets/inc/config.php');//get configuration file
+    if(isset($_POST['pass_login']))
+    {
+      $pass_email=$_POST['pass_email'];
+      $pass_pwd=sha1(md5($_POST['pass_pwd']));//double encrypt to increase security
+      $stmt=$mysqli->prepare("SELECT pass_email ,pass_pwd , pass_id FROM albosets_passenger WHERE pass_email=? and pass_pwd=? ");//sql to log in user
+      $stmt->bind_param('ss',$pass_email,$pass_pwd);//bind fetched parameters
+      $stmt->execute();//execute bind
+      $stmt -> bind_result($pass_email,$pass_pwd,$pass_id);//bind result
+      $rs=$stmt->fetch();
+      $_SESSION['pass_id']=$pass_id;//assaign session to passenger id
+      //$uip=$_SERVER['REMOTE_ADDR'];
+      //$ldate=date('d/m/Y h:i:s', time());
+      if($rs)
+      {//if its sucessfull
+        header("location:pass-dashboard.php");
+      }
+
+      else
+      {
+      #echo "<script>alert('Access Denied Please Check Your Credentials');</script>";
+      $error = "Access Denied Please Check Your Credentials";
+      }
+  }
+?>
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <title>Online Railway Reservation System</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css"/>
+    <!--Trigger Sweet Alert-->
+    <?php if(isset($error)) {?>
+  <!--This code for injecting an alert-->
+      <script>
+            setTimeout(function () 
+            { 
+              swal("Failed!","<?php echo $error;?>!","error");
+            },
+              100);
+      </script>
+					
+			<?php } ?>
+  </head>
+  <body class="be-splash-screen">
+    <div class="be-wrapper be-login">
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="splash-container">
+            <div class="card card-border-color card-border-color-success">
+              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27"><span class="splash-description">Please enter your user information.</span></div>
+              <div class="card-body">
+
+              <!--Login Form-->
+                <form method ="POST">
+                  <div class="login-form ">
+
+                    <div class="form-group">
+                      <input class="form-control" name="pass_email" type="text" placeholder="Email" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                      <input class="form-control" name="pass_pwd" type="password" placeholder="Password">
+                    </div>
+
+                    <div class="form-group row login-tools">
+                      <div class="col-6 login-remember">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="check1">
+                          <label class="custom-control-label" for="check1">Remember Me</label>
+                        </div>
+                      </div>
+                      <div class="col-6 login-forgot-password"><a href="pass-pwd-forgot.php">Forgot Password?</a></div>
+                    </div>
+
+                    <div class="form-group row login-submit">
+                      <div class="col-6"><a class="btn btn-danger btn-xl" href="pass-signup.php">Register</a></div>
+                      <div class="col-6"><input type = "submit" name ="pass_login" class="btn btn-success btn-xl" value ="Log In"></div>
+                    </div>
+                    
+                  </div>
+                </form>
+                <!--End Login-->
+              </div>
+            </div>
+            <div class="splash-footer"><a href = "index.php">Home</a></div>
+
+            <div class="splash-footer">&copy; 2024 - <?php echo date ('Y');?>ALBOSETS-Online Railway Reservation System | Developed By EDLIRA DAKU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/js/swal.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+  </body>
+
+</html>
+
+**PASS-LOGOUT**
+<?php
+    session_start();
+    unset($_SESSION['pass_id']);
+    session_destroy();
+
+    header("Location: pass-login.php");
+    exit;
+?>
+
+
+**PASS-MY-BOOKED-TRAIN**
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+ <!--!-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">My Train</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item active">My Booked Train</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+              
+              <?php
+              /**
+               * We need to get firstname or username of logged in user!!
+               */         
+                $aid=$_SESSION['pass_id'];
+                $ret="select * from albosets_passenger where pass_id=?";
+                $stmt= $mysqli->prepare($ret) ;
+                $stmt->bind_param('i',$aid);
+                $stmt->execute() ;//ok
+                $res=$stmt->get_result();
+                //$cnt=1;
+                while($row=$res->fetch_object())
+                 {
+                    ?>
+                <div class="card-header"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?>  This Is Your Booked Train!   
+                <?php }?>             
+                </div>
+
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Departure Time</th>
+                        <th>Fare</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        /**
+                         *Lets select train booking details of logged in user using PASSENGER ID as the session
+                         */
+                            //$aid=$_SESSION['pass_id'];
+                            $ret="select * from albosets_passenger where pass_id=?";//sql to get details of our user
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('i',$aid);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            //$cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                        ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->pass_train_number;?></td>
+                        <td><?php echo $row->pass_train_name;?></td>
+                        <td class="center"><?php echo $row->pass_dep_station;?></td>
+                        <td class="center"><?php echo $row->pass_arr_station;?></td>
+                        <td class="center"><?php echo $row->pass_dep_time;?></td>
+                        <td class="center">$<?php echo $row->pass_train_fare;?></td>
+                        
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         <!--footer-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+		 <!--space!-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-PRINT-TICKET**
+
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <!--Head-->
+    <?php include('assets/inc/head.php');?>
+  <!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--Nav Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navbar-->
+      <!--Sidebar-->
+        <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Train Ticket</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="#">Dashbaord</a></li>
+              <li class="breadcrumb-item"><a href="#">Tickets</a></li>
+              <li class="breadcrumb-item active">Print</li>
+            </ol>
+          </nav>
+        </div>
+
+        <?php
+          /**
+            *Server side code to get details of single passenger using id 
+            */
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";//fetch details of pasenger
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+            {
+        ?>
+        <!--get details of logged in user-->
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+
+            <!--Train Details-->
+              <div id='printReceipt' class="invoice">
+                <div class="row invoice-header">
+                  <div class="col-sm-7">
+                    <div class="invoice-logo"></div>
+                  </div>
+                  <div class="col-sm-5 invoice-order"><span class="invoice-id">Train Ticket For</span><span class="incoice-date"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?></span></div>
+                </div>
+                <div class="row invoice-data">
+                  <div class="col-sm-5 invoice-person"><span class="name"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?></span><span><?php echo $row->pass_email;?></span><span><?php echo $row->pass_addr;?></span></div>
+                  <div class="col-sm-2 invoice-payment-direction"></div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <table class="table table-bordered" >
+                    <thead>
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        /**
+                         *Lets select train booking details of logged in user using PASSENGER ID as the session
+                         */
+                            //$aid=$_SESSION['pass_id'];
+                            $ret="select * from albosets_passenger where pass_id=?";//sql to get details of our user
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('i',$aid);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            //$cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                        ?>
+                      <tr>
+                        <td><?php echo $row->pass_train_number;?></td>
+                        <td><?php echo $row->pass_train_name;?></td>
+                        <td><?php echo $row->pass_dep_station;?></td>
+                        <td><?php echo $row->pass_arr_station;?></td>
+                        <td><?php echo $row->pass_dep_time;?></td>
+                        <td>$<?php echo $row->pass_train_fare;?></td>
+                      </tr>
+                      <hr>
+                        <?php }?>
+                    </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row invoice-footer">
+                  <div class="col-lg-12">
+                    <button id="print" onclick="printContent('printReceipt');" class="btn btn-lg btn-space btn-primary">Print</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!--Close logged in user instance-->
+    <?php }?>
+    <!--footer-->
+    <?php include('assets/inc/footer.php');?>
+    <!--end footer-->
+      </div>
+      
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+    <!--print train ticket js-->
+    <script>
+      function printContent(el){
+        var restorepage = $('body').html();
+        var printcontent = $('#' + el).clone();
+        $('body').empty().html(printcontent);
+        window.print();
+        $('body').html(restorepage);
+        }
+     </script>
+  </body>
+
+</html>
+
+**PASS-PROFILE**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+  <!--Head-->
+  
+  <?php include('assets/inc/head.php');?>
+  <!--End Head-->
+  <body>
+
+
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--Navigation Bar-->
+      <?php include("assets/inc/navbar.php");?>
+      <!--End Naigation Bar-->
+      <!--Sidebar-->
+        <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+        <!--Server Side Scrit To Fetch all details of logged in user-->
+        <?php
+            $aid=$_SESSION['pass_id'];//Assaign session variable to passenger ID
+            $ret="select * from albosets_passenger where pass_id=?"; //sELECT ALL FROM PASSENGERS WHERE PASSENGER ID IS THE LOGGED ONE
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+        while($row=$res->fetch_object()) //Display all passenger details
+        {
+        ?>
+        <!--End Server Side Script-->
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="user-profile">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="user-display">
+                  <div class="user-display-bg"><img src="assets/img/profile/<?php echo $row->pass_dpic;?>" alt="Profile Background"></div>
+                  <div class="user-display-bottom">
+                    <div class="user-display-avatar"><img src="assets/img/profile/<?php echo $row->pass_dpic;?>" alt="Avatar"></div>
+                    <div class="user-display-info">
+                      <div class="name"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?> </div>
+                      <div class="nick"><span class="mdi mdi-account"></span><?php echo $row->pass_uname;?></div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="user-info-list card">
+                  <div class="card-header card-header-divider">About Me<span class="card-subtitle"><?php echo $row->pass_bio;?></span></div>
+                  <div class="card-body">
+                    <table class="no-border no-strip skills">
+                      <tbody class="no-border-x no-border-y">
+                        <tr>
+                          <td class="icon"><span class="mdi mdi-cake"></span></td>
+                          <td class="item">Birthday<span class="icon s7-gift"></span></td>
+                          <td><?php echo $row->pass_bday;?></td>
+                        </tr>
+                        <tr>
+                          <td class="icon"><span class="mdi mdi-smartphone-android"></span></td>
+                          <td class="item">Mobile<span class="icon s7-phone"></span></td>
+                          <td><?php echo $row->pass_phone;?></td>
+                        </tr>
+                        <tr>
+                          <td class="icon"><span class="mdi mdi-globe-alt"></span></td>
+                          <td class="item">Location<span class="icon s7-map-marker"></span></td>
+                          <td><?php echo $row->pass_addr;?></td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+        </div>
+      </div>
+    <?php }?>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.pie.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.time.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/jquery.flot.resize.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/jquery.flot.orderBars.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/curvedLines.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-flot/plugins/jquery.flot.tooltip.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.pageProfile();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-PROFILE-AVATAR**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['Update_profile_pic']))
+    {
+           /*
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+            //$passwordconf=md5($_POST['passwordconf']);
+            //$date = date('d-m-Y h:i:s', time());
+            */
+            $pass_dpic=$_FILES["pass_dpic"]["name"];
+		    //$id=intval($_GET['id']);
+		    move_uploaded_file($_FILES["pass_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["pass_dpic"]["name"]);
+            $query="update  albosets_passenger set pass_dpic = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query);
+            $rc=$stmt->bind_param('si', $pass_dpic, $aid);
+            $stmt->execute();
+                if($stmt)
+                {
+                    $succ = "Profile Picture Updated";
+                }
+                else 
+                {
+                    $err = "Please Try Again Later";
+                }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+
+            if(isset($_POST['Update_Password']))
+
+    {
+           /*
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+           
+            //$date = date('d-m-Y h:i:s', time());
+             $pass_dpic=$_FILES["pass_dpic"]["name"];
+		    //$id=intval($_GET['id']);
+		    move_uploaded_file($_FILES["pass_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["pass_dpic"]["name"]);
+            */
+            $aid=$_SESSION['pass_id'];
+            $pass_pwd=sha1(md5($_POST['pass_pwd']));
+            $query="update  albosets_passenger set pass_pwd = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query);
+            $rc=$stmt->bind_param('si', $pass_dpic, $aid);
+            $stmt->execute();
+                if($stmt)
+                {
+                    $succ1 = "Password  Updated";
+                }
+                else 
+                {
+                    $err = "Please Try Again Later";
+                }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Profile </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Profile</a></li>
+              <li class="breadcrumb-item active">Change Password | Profile Photo </li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($succ1)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ1;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider">Update Your Profile Photo</div>
+                <div class="card-body">
+                  <form method ="POST" enctype="multipart/form-data">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Select A New Profile Picture</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="btn" name="pass_dpic"  id="inputText3" type="file">
+                      </div>
+                    </div>
+                   
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-success" value ="Update Profile" name = "Update_profile_pic" type="submit">
+                          <button class="btn btn-space btn-danger">Cancel</button>
+                        </p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+       
+        <?php }?>
+        
+      </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+
+**PASS-PROFILE-PASSWORD**
+
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+
+            if(isset($_POST['Update_Password']))
+
+    {
+           /*
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+           
+            //$date = date('d-m-Y h:i:s', time());
+             $pass_dpic=$_FILES["pass_dpic"]["name"];
+		    //$id=intval($_GET['id']);
+		    move_uploaded_file($_FILES["pass_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["pass_dpic"]["name"]);
+            */
+            $aid=$_SESSION['pass_id'];
+            $pass_pwd=sha1(md5($_POST['pass_pwd']));
+            $query="update  albosets_passenger set pass_pwd = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query);
+            $rc=$stmt->bind_param('si', $pass_pwd, $aid);
+            $stmt->execute();
+                if($stmt)
+                {
+                    $succ1 = "Password  Updated";
+                }
+                else 
+                {
+                    $err = "Please Try Again Later";
+                }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Change Password </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Profile</a></li>
+              <li class="breadcrumb-item active">Change Password | Profile Photo </li>
+            </ol>
+          </nav>
+        </div>
+        <?php if(isset($succ1)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ1;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>     
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider">Change Password<span class="card-subtitle">Fill All Details</span></div>
+                <div class="card-body">
+                  <form method ="POST" >
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Old Password</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="" id="inputText3" type="password">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">New Password</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_pwd"  id="inputText3" type="password">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Confirm New Password</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name=""  id="inputText3" type="password">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-success" value ="Change Password" name = "Update_Password" type="submit">
+                          <button class="btn btn-space btn-danger">Cancel</button>
+                        </p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+       
+        <?php }?>
+        
+      </div>
+      <!--footer-->
+      <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  </body>
+
+</html>
+
+
+**PASS-PROFILE-UPDATE**
+<?php
+    session_start();
+    include('assets/inc/config.php');
+    //date_default_timezone_set('Africa /Nairobi');
+    include('assets/inc/checklogin.php');
+    check_login();
+    $aid=$_SESSION['pass_id'];
+    if(isset($_POST['Update_Profile']))
+    {
+
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+            //$passwordconf=md5($_POST['passwordconf']);
+            //$date = date('d-m-Y h:i:s', time());
+            $query="update  albosets_passenger set pass_fname = ?, pass_lname = ?, pass_phone = ?, pass_addr = ?, pass_email = ?, pass_uname = ?, pass_bday = ?, pass_bio = ? where pass_id=?";
+            $stmt = $mysqli->prepare($query);
+            $rc=$stmt->bind_param('ssssssssi', $pass_fname, $pass_lname, $pass_phone, $pass_addr, $pass_email, $pass_uname, $pass_bday, $pass_bio, $aid);
+            $stmt->execute();
+                if($stmt)
+                {
+                    $succ = "Your Profile Has Been Updated";
+                }
+                else 
+                {
+                    $err = "Please Try Again Later";
+                }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<!--Head-->
+<?php include('assets/inc/head.php');?>
+<!--End Head-->
+  <body>
+    <div class="be-wrapper be-fixed-sidebar ">
+    <!--Navigation Bar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End Navigation Bar-->
+
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+      <div class="be-content">
+        <div class="page-head">
+          <h2 class="page-head-title">Profile </h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Profile</a></li>
+              <li class="breadcrumb-item active">Update Profile</li>
+            </ol>
+          </nav>
+        </div>
+            <?php if(isset($succ)) {?>
+                                <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Success!","<?php echo $succ;?>!","success");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <?php if(isset($err)) {?>
+        <!--This code for injecting an alert-->
+                <script>
+                            setTimeout(function () 
+                            { 
+                                swal("Failed!","<?php echo $err;?>!","Failed");
+                            },
+                                100);
+                </script>
+
+        <?php } ?>
+        <div class="main-content container-fluid">
+        <?php
+            $aid=$_SESSION['pass_id'];
+            $ret="select * from albosets_passenger where pass_id=?";
+            $stmt= $mysqli->prepare($ret) ;
+            $stmt->bind_param('i',$aid);
+            $stmt->execute() ;//ok
+            $res=$stmt->get_result();
+            //$cnt=1;
+            while($row=$res->fetch_object())
+        {
+        ?>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-border-color card-border-color-success">
+                <div class="card-header card-header-divider">Update Your Profile<span class="card-subtitle">Fill All Details</span></div>
+                <div class="card-body">
+                  <form method ="POST">
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">First Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_fname" value="<?php echo $row->pass_fname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Last Name</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_lname" value="<?php echo $row->pass_lname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Phone Number</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_phone" value="<?php echo $row->pass_phone;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Address</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_addr" value="<?php echo $row->pass_addr;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Email</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_email" value="<?php echo $row->pass_email;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Username</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_uname" value="<?php echo $row->pass_uname;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Birthday</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <input class="form-control" name="pass_bday" value="<?php echo $row->pass_bday;?>" id="inputText3" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3"> Bio</label>
+                      <div class="col-12 col-sm-8 col-lg-6">
+                        <textarea class="form-control" name="pass_bio"  id="inputText3" type="text"><?php echo $row->pass_bio;?></textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-right">
+                          <input class="btn btn-space btn-success" value ="Update Profile" name = "Update_Profile" type="submit">
+                          <button class="btn btn-space btn-secondary">Cancel</button>
+                        </p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+       
+        <?php }?>
+        
+        </div>
+        <!--footer-->
+        <?php include('assets/inc/footer.php');?>
+        <!--EndFooter-->
+      </div>
+
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+    <script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.formElements();
+      });
+    </script>
+  
+</body>
+
+</html>
+
+**PASS-PWD-FORGOT**
+<!--Server side code to handle passenger sign up-->
+<?php
+	session_start();
+	include('assets/inc/config.php');
+		if(isset($_POST['Pwd_reset']))
+		{
+			#$pass_fname=$_POST['pass_fname'];
+			#$mname=$_POST['mname'];
+			#$pass_lname=$_POST['pass_lname'];
+			#$pass_phone=$_POST['pass_phone'];
+			#$pass_addr=$_POST['pass_addr'];
+			#$pass_uname=$_POST['pass_uname'];
+			$email=$_POST['email'];
+			$status='Pending';
+            //sql to insert captured values
+			$query="insert into albosets_passwordresets (email, status) values(?,?)";
+			$stmt = $mysqli->prepare($query);
+			$rc=$stmt->bind_param('ss', $email, $status);
+			$stmt->execute();
+			/*
+			*Use Sweet Alerts Instead Of This Fucked Up Javascript Alerts
+			*echo"<script>alert('Successfully Created Account Proceed To Log In ');</script>";
+			*/ 
+			//declare a varible which will be passed to alert function
+			if($stmt)
+			{
+				$success = "Check Your Email For Password Reset Instructions";
+			}
+			else {
+				$err = "Please Try Again Or Try Later";
+			}
+			
+			
+		}
+?>
+<!--End Server Side-->
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <title>Online Railway Reservation System</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css"/>
+  </head>
+  <body class="be-splash-screen">
+    <div class="be-wrapper be-login">
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="splash-container forgot-password">
+            <div class="card card-border-color card-border-color-success">
+              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="102" height="#{conf.logoHeight}"><span class="splash-description">Forgot your password?</span></div>
+              <div class="card-body">
+              <?php if(isset($success)) {?>
+            <!--This code for injecting an alert-->
+                    <script>
+                                setTimeout(function () 
+                                { 
+                                    swal("Success!","<?php echo $success;?>!","success");
+                                },
+                                    100);
+                    </script>
+    
+            <?php } ?>
+            <?php if(isset($err)) {?>
+            <!--This code for injecting an alert-->
+                    <script>
+                                setTimeout(function () 
+                                { 
+                                    swal("Failed!","<?php echo $err;?>!","Failed");
+                                },
+                                    100);
+                    </script>
+    
+            <?php } ?>
+              <!--Password Reset Form-->
+                <form method ="POST" >
+                  <p>Don't worry, we'll send you an email to reset your password.</p>
+                  <div class="form-group pt-4">
+                    <input class="form-control" type="email" name="email" required="" placeholder="Your Email" autocomplete="off">
+                  </div>
+                  <p class="pt-1 pb-4">Don't remember your email? <a href="#">Contact Support</a>.</p>
+                  <div class="form-group pt-1"><input type ="submit" name ="Pwd_reset" class="btn btn-block btn-primary btn-xl" value = "Reset Password"></div>
+                </form>
+                <!--End Password Reset-->
+              </div>
+            </div>
+            <div class="splash-footer"><a href = "pass-login.php">Home</a></div>
+            <div class="splash-footer">&copy; 2019 - <?php echo date ('Y');?> Online Railway Reservation System | Developed By EDLIRA DAKU</div>
+        </div>
+      </div>
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/js/swal.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+  </body>
+
+</html>
+
+**PASS-SEARCH-AVAILABLE-TRAINS**
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">Advanced Train Search</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Trains</a></li>
+              <li class="breadcrumb-item active">Advanced Train Search</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+                <div class="card-header">Available Train Details
+                  <div class="tools dropdown"><span class="icon mdi mdi-download"></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class="icon mdi mdi-more-vert"></span></a>
+                    <div class="dropdown-menu" role="menu"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Total Passengers</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        /*
+                        *Lets get details of available trains!!
+                        */
+                        $ret="SELECT * FROM albosets_train  "; //sql code to get all details of trains.
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        $cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                    ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->number;?></td>
+                        <td><?php echo $row->name;?></td>
+                        <td><?php echo $row->route;?></td>
+                        <td class="center"><?php echo $row->current;?></td>
+                        <td class="center"><?php echo $row->destination;?></td>
+                        <td class="center"><?php echo $row->time;?></td>
+                        <td class="center">$<?php echo $row->fare;?></td>
+                        <td class="center"><?php echo $row->passengers;?></td>
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         <!--footer-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
+
+**PASS-SIGNUP**
+<!--Server side code to handle passenger sign up-->
+<?php
+	session_start();
+	include('assets/inc/config.php');
+		if(isset($_POST['pass_register']))
+		{
+			$pass_fname=$_POST['pass_fname'];
+			#$mname=$_POST['mname'];
+			$pass_lname=$_POST['pass_lname'];
+			$pass_phone=$_POST['pass_phone'];
+			$pass_addr=$_POST['pass_addr'];
+			$pass_uname=$_POST['pass_uname'];
+			$pass_email=$_POST['pass_email'];
+			$pass_pwd=sha1(md5($_POST['pass_pwd']));
+      //sql to insert captured values
+			$query="insert into albosets_passenger (pass_fname, pass_lname, pass_phone, pass_addr, pass_uname, pass_email, pass_pwd) values(?,?,?,?,?,?,?)";
+			$stmt = $mysqli->prepare($query);
+			$rc=$stmt->bind_param('sssssss',$pass_fname, $pass_lname, $pass_phone, $pass_addr, $pass_uname, $pass_email, $pass_pwd);
+			$stmt->execute();
+			/*
+			*Use Sweet Alerts Instead Of This Fucked Up Javascript Alerts
+			*echo"<script>alert('Successfully Created Account Proceed To Log In ');</script>";
+			*/ 
+			//declare a varible which will be passed to alert function
+			if($stmt)
+			{
+				$success = "Created Account Proceed To Log In";
+			}
+			else {
+				$err = "Please Try Again Or Try Later";
+			}
+			
+			
+		}
+?>
+<!--End Server Side-->
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <title>Online Railway Reservation System</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css"/>
+  </head>
+  <body class="be-splash-screen">
+    <div class="be-wrapper be-login">
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="splash-container">
+            <div class="card card-border-color card-border-color-success">
+              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27"><span class="splash-description">Passenger Registration Form</span></div>
+              <div class="card-body">
+            
+              <?php if(isset($success)) {?>
+							<!--This code for injecting an alert-->
+									<script>
+												setTimeout(function () 
+												{ 
+													swal("Success!","<?php echo $success;?>!","success");
+												},
+													100);
+									</script>
+					
+							<?php } ?>
+							<?php if(isset($err)) {?>
+							<!--This code for injecting an alert-->
+									<script>
+												setTimeout(function () 
+												{ 
+													swal("Failed!","<?php echo $err;?>!","Failed");
+												},
+													100);
+									</script>
+					
+							<?php } ?>
+
+              <!--Login Form-->
+                <form method ="POST">
+                  <div class="login-form">
+
+                    <div class="form-group">
+                      <input class="form-control" name="pass_fname" type="text" placeholder="Enter Your First Name" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_lname" type="text" placeholder="Enter Your Last Name" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_phone" type="text" placeholder="Enter Your Phone Number" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_addr" type="text" placeholder="Enter Your Address" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_uname" type="text" placeholder="Enter Your Username" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_email" type="email" placeholder="Enter Your Email Address" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" name="pass_pwd" type="password" placeholder="Password">
+                    </div>
+                    <div class="form-group row login-submit">
+                      <div class="col-6"><a class="btn btn-outline-success btn-xl" href="pass-login.php">Login</a></div>
+                      <div class="col-6"><input type = "submit" name ="pass_register" class="btn btn-outline-danger btn-xl" value ="Register"></div>
+                    </div>
+
+                  </div>
+                </form>
+                <!--End Login-->
+              </div>
+            </div>
+            <div class="splash-footer">&copy; 2019 - <?php echo date ('Y');?> Online Railway Reservation System | Developed By EDLIRA DAKU</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/js/swal.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+  </body>
+</html>
+
+**PASS-TRAIN-CHECKOUT-TICKET**
+<!--Start Server side code to give us and hold session-->
+<?php
+  session_start();
+  include('assets/inc/config.php');
+  include('assets/inc/checklogin.php');
+  check_login();
+  $aid=$_SESSION['pass_id'];
+?>
+<!--End Server side scriptiing-->
+<!DOCTYPE html>
+<html lang="en">
+<!--HeAD-->
+<!--space!-->
+  <?php include('assets/inc/head.php');?>
+ <!-- end HEAD--> 
+  <body>
+    <div class="be-wrapper be-fixed-sidebar">
+    <!--navbar-->
+      <?php include('assets/inc/navbar.php');?>
+      <!--End navbar-->
+      <!--Sidebar-->
+      <?php include('assets/inc/sidebar.php');?>
+      <!--End Sidebar-->
+
+      <div class="be-content">
+      <div class="page-head">
+          <h2 class="page-head-title">Checkout Tickets</h2>
+          <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb page-head-nav">
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="">Train Tickets</a></li>
+              <li class="breadcrumb-item active">Checkout</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="main-content container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+              
+              <?php
+              /**
+               * We need to get firstname or username of logged in user!!
+               */         
+                $aid=$_SESSION['pass_id'];
+                $ret="select * from albosets_passenger where pass_id=?";
+                $stmt= $mysqli->prepare($ret) ;
+                $stmt->bind_param('i',$aid);
+                $stmt->execute() ;//ok
+                $res=$stmt->get_result();
+                //$cnt=1;
+                while($row=$res->fetch_object())
+                 {
+                    ?>
+                <div class="card-header"><?php echo $row->pass_fname;?> <?php echo $row->pass_lname;?>  This Is Your Booked Train Proceed to checkout your ticket!   
+                <?php }?>             
+                </div>
+
+                <div class="card-body">
+                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Train Number</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
+                        <th>Fare</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        /**
+                         *Lets select train booking details of logged in user using PASSENGER ID as the session
+                         */
+                            //$aid=$_SESSION['pass_id'];
+                            $ret="SELECT * FROM albosets_passenger WHERE pass_id=? && pass_fare_payment_code = ''";//sql to get details of our user
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('i',$aid);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            //$cnt=1;
+                        while($row=$res->fetch_object())
+                        {
+                        ?>
+                      <tr class="odd gradeX even gradeC odd gradeA even gradeA ">
+                        <td><?php echo $row->pass_train_number;?></td>
+                        <td><?php echo $row->pass_train_name;?></td>
+                        <td class="center"><?php echo $row->pass_dep_station;?></td>
+                        <td class="center"><?php echo $row->pass_arr_station;?></td>
+                        <td class="center"><?php echo $row->pass_dep_time;?></td>
+                        <td class="center">$<?php echo $row->pass_train_fare;?></td>
+                        <td class="center"><a href="pass-checkout-ticket.php?pass_id = <?php echo $row->pass_id;?>"><button class="btn btn-success btn-sm">Checkout</button></a></td>
+                      </tr>
+                        <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         <!--footer-->
+		 <!--!-->
+         <?php include('assets/inc/footer.php');?>
+         <!--End Footer-->
+        </div>
+      </div>
+     
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/jszip/jszip.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//-initialize the javascript
+      	App.init();
+      	App.dataTables();
+      });
+    </script>
+  </body>
+
+</html>
