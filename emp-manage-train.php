@@ -27,7 +27,6 @@ if(isset($_GET['del']))
 }
 ?>
 <!--End Server side scriptiing-->
-<!--Log on to codeastro.com for more projects!-->
 <!DOCTYPE html>
 <html lang="en">
 <!--HeAD-->
@@ -41,6 +40,7 @@ if(isset($_GET['del']))
       <!--Sidebar-->
       <?php include('assets/inc/sidebar.php');?>
       <!--End Sidebar-->
+	  <!--Log on to codeastro.com for more projects!-->
 
       <div class="be-content">
       <div class="page-head">
@@ -66,7 +66,6 @@ if(isset($_GET['del']))
         <?php } ?>
         <?php if(isset($err)) {?>
         <!--This code for injecting an alert-->
-		<!--Log on to codeastro.com for more projects!-->
                 <script>
                             setTimeout(function () 
                             { 
@@ -137,8 +136,8 @@ if(isset($_GET['del']))
                 </div>
               </div>
             </div>
-			<!--Log on to codeastro.com for more projects!-->
           </div>
+		  <!--Log on to codeastro.com for more projects!-->
          
          <!--footer-->
          <?php include('assets/inc/footer.php');?>

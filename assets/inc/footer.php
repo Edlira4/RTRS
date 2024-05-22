@@ -1,4 +1,4 @@
 <div class="splash-footer">
-    &copy; 2024 - <?php echo date ('Y');?>
-    ALBOSETS Online Railway Reservation System | Developed By EDLIRA DAKU
+    &copy; 2019 - <?php echo date ('Y');?>
+    Online Railway Reservation System | Developed By Martin Mbithi Nzilani
 </div>

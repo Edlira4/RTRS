@@ -4,7 +4,7 @@
   include('assets/inc/config.php');
   include('assets/inc/checklogin.php');
   check_login();
-  $aid=$_SESSION['admin_id'];
+  $aid=$_SESSION['emp_id'];
   //delete or remove library user  php code
 if(isset($_GET['del']))
 {

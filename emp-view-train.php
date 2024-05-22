@@ -10,6 +10,7 @@
   <!--Head-->
     <?php include('assets/inc/head.php');?>
   <!--End Head-->
+  <!--Log on to codeastro.com for more projects!-->
   <body>
     <div class="be-wrapper be-fixed-sidebar">
     <!--Nav Bar-->
@@ -18,7 +19,6 @@
       <!--Sidebar-->
         <?php include('assets/inc/sidebar.php');?>
       <!--End Sidebar-->
-	  <!--Log on to codeastro.com for more projects!-->
       <div class="be-content">
         <div class="page-head">
           <h2 class="page-head-title">Train Details</h2>
@@ -48,6 +48,7 @@
         <!--get details of logged in user-->
         <div class="main-content container-fluid">
           <div class="row">
+		  <!--Log on to codeastro.com for more projects!-->
             <div class="col-lg-12">
 
             <!--Train Details-->
@@ -56,17 +57,17 @@
                   <div class="col-sm-7">
                     <div class="invoice-logo"></div>
                   </div>
-                </div><!--Log on to codeastro.com for more projects!-->
+                </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <table class="table table-bordered table-striped" >
+                    <table class="table table-bordered" >
                     <thead>
                       <tr>
                         <th>Train Number</th>
-                        <th>Train Name</th>
-                        <th>Departure Station</th>
-                        <th>Arrival Station</th>
-                        <th>Departure Time</th>
+                        <th>Train</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Dep.Time</th>
                         <th>Fare</th>
                       </tr>
                     </thead>
@@ -87,12 +88,12 @@
                   </div>
                 </div>
               </div>
-              <hr>
+              <hr><!--Log on to codeastro.com for more projects!-->
               <div class="row invoice-footer">
                   <div class="col-lg-12">
                     <button id="print" onclick="printContent('printReceipt');" class="btn btn-lg btn-space btn-secondary">Print</button>
                   </div>
-                </div><!--Log on to codeastro.com for more projects!-->
+                </div>
             </div>
           </div>
         </div>

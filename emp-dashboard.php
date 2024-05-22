@@ -3,7 +3,7 @@
   include('assets/inc/config.php');
   include('assets/inc/checklogin.php');
   check_login();
-  $aid=$_SESSION['admin_id'];
+  $aid=$_SESSION['emp_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,13 +39,11 @@
                   $stmt->close();
                 ?>
                   <div class="desc">Passengers</div>
-                  <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $pass;?>">0</span>
+                  <div class="value"><span class="indicator indicator-equal mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $pass;?>">0</span>
                   </div>
                 </div>
               </div>
             </div>
-
-
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="widget widget-tile">
               <div class="chart sparkline"><i class="material-icons">directions_subway</i></div>
@@ -65,109 +63,29 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="widget widget-tile">
-              <div class="chart sparkline"><i class="material-icons">rowing</i></div>
-                <div class="data-info">
-                <?php
-                    //code for summing up number of trains tickets
-                    $result ="SELECT count(*) FROM `albosets_train_tickets` ";
-                    $stmt = $mysqli->prepare($result);
-                    $stmt->execute();
-                    $stmt->bind_result($resevations);
-                    $stmt->fetch();
-                    $stmt->close();
-                  ?>
-                  <div class="desc">Reservations</div>
-                  <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $resevations;?>">0</span>
-                  </div>
-                </div>
-              </div>
-              </div>
-
-            <div class="col-12 col-lg-6 col-xl-3">
-              <div class="widget widget-tile">
-              <div class="chart sparkline"><i class="material-icons">supervisor_account</i></div>
-                <div class="data-info">
-                <?php
-                  //code for summing up number of passengers 
-                  $result ="SELECT count(*) FROM albosets_employee";
-                  $stmt = $mysqli->prepare($result);
-                  $stmt->execute();
-                  $stmt->bind_result($pass);
-                  $stmt->fetch();
-                  $stmt->close();
-                ?>
-                  <div class="desc">Employees</div>
-                  <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $pass;?>">0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div class="col-12 col-lg-6 col-xl-4">
-              <div class="widget widget-tile">
-              <div class="chart sparkline"><i class="material-icons">person</i></div>
-                <div class="data-info">
-                <?php
-                  //code for summing up number of passengers 
-                  $result ="SELECT count(*) FROM albosets_admin ";  
-                  $stmt = $mysqli->prepare($result);
-                  $stmt->execute();
-                  $stmt->bind_result($pass);
-                  $stmt->fetch();
-                  $stmt->close();
-                ?>
-                  <div class="desc">Administrators</div>
-                  <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $pass;?>">0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- <div class="col-12 col-lg-6 col-xl-3">
-              <div class="widget widget-tile">
-              <div class="chart sparkline"><i class="material-icons">local_activity</i></div>
-                <div class="data-info">
-                <?php
-                  //code for summing up number of passengers 
-                  $result ="SELECT count(*) FROM albosets_passwordresets where status = 'Pending' ";  
-                  $stmt = $mysqli->prepare($result);
-                  $stmt->execute();
-                  $stmt->bind_result($pass);
-                  $stmt->fetch();
-                  $stmt->close();
-                ?>
-                  <div class="desc">Passwd Resets</div>
-                  <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $pass;?>">0</span>
-                  </div>
-                </div>
-              </div>
-            </div> -->    
-            
-            <div class="col-12 col-lg-6 col-xl-4">
-              <div class="widget widget-tile">
-              <div class="chart sparkline"><i class="material-icons">loyalty</i></div>
+              <div class="chart sparkline"><i class="material-icons">receipt</i></div>
                 <div class="data-info">
                 <?php
                   //code for summing up number of trains tickets
-                  $result ="SELECT count(*) FROM albosets_train_tickets where confirmation = 'Approved'";
+                  $result ="SELECT count(*) FROM albosets_train_tickets WHERE confirmation ='Approved'";
                   $stmt = $mysqli->prepare($result);
                   $stmt->execute();
                   $stmt->bind_result($ticket);
                   $stmt->fetch();
                   $stmt->close();
                 ?>
-                  <div class="desc">Approved Tickets</div>
+                  <div class="desc">Booked Tickets</div>
                   <div class="value"><span class="indicator indicator-positive mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo $ticket;?>">0</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-12 col-lg-6 col-xl-4">
+
+            <div class="col-12 col-lg-6 col-xl-3">
               <div class="widget widget-tile">
               <div class="chart sparkline"><i class="material-icons">assignment_late</i></div>
                 <div class="data-info">
@@ -187,6 +105,7 @@
               </div>
             </div>
 
+
           </div>            
           <div class="row">
             <div class="col-sm-12">
@@ -202,7 +121,6 @@
                   <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
                     <thead class="thead-dark">
                       <tr>
-                        <th>#</th>
                         <th>Train Number</th>
                         <th>Train</th>
                         <th>Route</th>
@@ -225,7 +143,6 @@
                       {
                       ?>
                           <tr class="odd gradeX even gradeC odd gradeA ">
-                            <td><?php echo $cnt;?>
                             <td><?php echo $row->number;?></td>
                             <td><?php echo $row->name;?></td>
                             <td><?php echo $row->route;?></td>
@@ -270,7 +187,7 @@
                     </thead>
                     <tbody>
                       <?php
-                        $ret="SELECT * FROM albosets_train_tickets WHERE confirmation ='Approved' LIMIT 10";
+                        $ret="SELECT * FROM albosets_train_tickets WHERE confirmation ='Approved'"; //sql code to get all details of booked trains.
                         $stmt= $mysqli->prepare($ret) ;
                         $stmt->execute() ;//ok
                         $res=$stmt->get_result();
@@ -279,6 +196,7 @@
                       {
                       ?>
                           <tr class="odd gradeX even gradeC odd gradeA ">
+                      
                             <td><?php echo $cnt;?>
                             <td><?php echo $row->pass_name;?></td>
                             <td><?php echo $row->pass_addr;?></td>
@@ -287,56 +205,6 @@
                             <td><?php echo $row->train_dep_stat ;?></td>
                             <td><?php echo $row->train_arr_stat;?></td>
                             <td>$<?php echo $row->train_fare;?></td>
-                          </tr>
-
-                      <?php $cnt=$cnt+1; }?>
-                    </tbody>
-                  </table>
-                  <!--eND Table-->
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card card-table">
-                <div class="card-header">Employees List
-                
-                  <div class="tools dropdown"><span class=""></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class=""></span></a>
-                    
-                  </div>
-                </div>
-                <div class="card-body">
-                <!--Start Table-->
-                  <table class="table table-striped table-bordered table-hover table-fw-widget" id="table1">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th>#</th>
-                        <th>Employee</th>
-                        <th>Address</th>
-                        <th>Contact</th>
-                        <th>National ID</th>
-                        <th>Email</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                        $ret="SELECT * FROM albosets_employee ORDER BY RAND() LIMIT 10  "; //sql code to get all details of all employees
-                        $stmt= $mysqli->prepare($ret) ;
-                        $stmt->execute() ;//ok
-                        $res=$stmt->get_result();
-                        $cnt=1;
-                        while($row=$res->fetch_object())
-                      {
-                      ?>
-                          <tr class="odd gradeX even gradeC odd gradeA ">
-                            <td><?php echo $cnt;?>
-                            <td><?php echo $row->emp_fname;?> <?php echo $row->emp_lname;?></td>
-                            <td><?php echo $row->emp_addr;?></td>
-                            <td><?php echo $row->emp_phone;?></td>
-                            <td><?php echo $row->emp_nat_idno;?></td>
-                            <td><?php echo $row->emp_email ;?></td>
                           </tr>
 
                       <?php $cnt=$cnt+1; }?>

@@ -4,14 +4,14 @@
     include('assets/inc/config.php');//get configuration file
     if(isset($_POST['emp_login']))
     {
-      $admin_email=$_POST['admin_email'];
-      $admin_pwd=sha1(md5($_POST['admin_pwd']));//double encrypt to increase security
-      $stmt=$mysqli->prepare("SELECT admin_email ,admin_pwd , admin_id FROM albosets_admin WHERE admin_email=? and admin_pwd=? ");//sql to log in user
-      $stmt->bind_param('ss',$admin_email,$admin_pwd);//bind fetched parameters
+      $emp_email=$_POST['emp_email'];
+      $emp_pwd=sha1(md5($_POST['emp_pwd']));//double encrypt to increase security
+      $stmt=$mysqli->prepare("SELECT emp_email ,emp_pwd , emp_id FROM albosets_employee WHERE emp_email=? and emp_pwd=? ");//sql to log in user
+      $stmt->bind_param('ss',$emp_email,$emp_pwd);//bind fetched parameters
       $stmt->execute();//execute bind
-      $stmt -> bind_result($admin_email,$admin_pwd,$admin_id);//bind result
+      $stmt -> bind_result($emp_email,$emp_pwd,$emp_id);//bind result
       $rs=$stmt->fetch();
-      $_SESSION['admin_id']=$admin_id;//assaign session to admin id
+      $_SESSION['emp_id']=$emp_id;//assaign session to passenger id
       //$uip=$_SERVER['REMOTE_ADDR'];
       //$ldate=date('d/m/Y h:i:s', time());
       if($rs)
@@ -58,8 +58,8 @@
       <div class="be-content">
         <div class="main-content container-fluid">
           <div class="splash-container">
-            <div class="card card-border-color card-border-color-danger">
-              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27"><span class="splash-description">Admin Login Panel</span></div>
+            <div class="card card-border-color card-border-color-success">
+              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27"><span class="splash-description">Please enter your user information.</span></div>
               <div class="card-body">
 
               <!--Login Form-->
@@ -67,11 +67,11 @@
                   <div class="login-form ">
 
                     <div class="form-group">
-                      <input class="form-control" name="admin_email" type="text" placeholder="Email" autocomplete="off">
+                      <input class="form-control" name="emp_email" type="text" placeholder="Email" autocomplete="off">
                     </div>
 
                     <div class="form-group">
-                      <input class="form-control" name="admin_pwd" type="password" placeholder="Password">
+                      <input class="form-control" name="emp_pwd" type="password" placeholder="Password">
                     </div>
 
                     <div class="form-group row login-tools">
@@ -81,21 +81,22 @@
                           <label class="custom-control-label" for="check1">Remember Me</label>
                         </div>
                       </div>
-                      <div class="col-6 login-forgot-password"><a href="../pass-pwd-forgot.php">Forgot Password?</a></div>
+                      <div class="col-6 login-forgot-password"><a target = "_blank" href="../pass-pwd-forgot.php">Forgot Password?</a></div>
                     </div>
 
                     <div class="form-group row login-submit">
-                      <div class="col-12"><input type = "submit" name ="emp_login" class="btn btn-danger btn-xl btn-block" value ="Log In"></div>
+                      <div class="col-6"><input type = "submit" name ="emp_login" class="btn btn-success btn-xl" value ="Log In"></div>
                     </div>
                     
                   </div>
                 </form>
                 <!--End Login-->
-                <div class="splash-footer">Back <a href = "../index.php">Home</a></div>
-
               </div>
             </div>
-            <div class="splash-footer">&copy; 2024 - <?php echo date ('Y');?> Online Railway Reservation System for Albania | Developed By EDLIRA DAKU</div>
+            <div class="splash-footer">Back <a href = "../index.php">Home</a></div>
+
+
+            <div class="splash-footer">&copy; 2024 - <?php echo date ('Y');?> ALBOSETS-Online Railway Reservation System | Developed By EDLIRA DAKU</div>
           </div>
         </div>
       </div>

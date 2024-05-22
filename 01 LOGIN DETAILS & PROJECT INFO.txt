@@ -11,7 +11,6 @@
 
 Email   : edlira2019@mail.com
 Password: 44224422
-
 **Employee Login Details**
 
 Email   : asokolaj@mail.com
@@ -38,7 +37,5 @@ Password: 45678
 
 Email   : abitri@mail.com
 Password: 56789
-..... if more needed- contact creator at edaku21@epoka.edu.al
-
 
 

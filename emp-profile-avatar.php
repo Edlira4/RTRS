@@ -4,7 +4,7 @@
     //date_default_timezone_set('Africa /Nairobi');
     include('assets/inc/checklogin.php');
     check_login();
-    $aid=$_SESSION['admin_id'];
+    $aid=$_SESSION['emp_id'];
     if(isset($_POST['Update_profile_pic']))
     {
            /*
@@ -20,12 +20,12 @@
             //$passwordconf=md5($_POST['passwordconf']);
             //$date = date('d-m-Y h:i:s', time());
             */
-            $admin_dpic=$_FILES["admin_dpic"]["name"];
+            $emp_dpic=$_FILES["emp_dpic"]["name"];
 		    //$id=intval($_GET['id']);
-		    move_uploaded_file($_FILES["admin_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["admin_dpic"]["name"]);
-            $query="update  albosets_admin set admin_dpic = ? where admin_id=?";
+		    move_uploaded_file($_FILES["emp_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["emp_dpic"]["name"]);
+            $query="update  albosets_employee set emp_dpic = ? where emp_id=?";
             $stmt = $mysqli->prepare($query);
-            $rc=$stmt->bind_param('si', $admin_dpic, $aid);
+            $rc=$stmt->bind_param('si', $emp_dpic, $aid);
             $stmt->execute();
                 if($stmt)
                 {
@@ -38,7 +38,41 @@
             #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
             }
 
-            
+            if(isset($_POST['Update_Password']))
+
+    {
+           /*
+            $pass_fname=$_POST['pass_fname'];
+            $pass_lname = $_POST['pass_lname'];
+            $pass_phone=$_POST['pass_phone'];
+            $pass_addr=$_POST['pass_addr'];
+            $pass_email=$_POST['pass_email'];
+            $pass_uname=$_POST['pass_uname'];
+            $pass_bday=$_POST['pass_bday'];
+            //$pass_ocupation=$_POST['pass_occupation'];
+            $pass_bio=($_POST['pass_bio']);
+           
+            //$date = date('d-m-Y h:i:s', time());
+             $pass_dpic=$_FILES["pass_dpic"]["name"];
+		    //$id=intval($_GET['id']);
+		    move_uploaded_file($_FILES["pass_dpic"]["tmp_name"],"assets/img/profile/".$_FILES["pass_dpic"]["name"]);
+            */
+            $aid=$_SESSION['emp_id'];
+            $emp_pwd=sha1(md5($_POST['emp_pwd']));
+            $query="update  albosets_employee set emp_pwd = ? where emp_id=?";
+            $stmt = $mysqli->prepare($query);
+            $rc=$stmt->bind_param('si', $emp_pwd, $aid);
+            $stmt->execute();
+                if($stmt)
+                {
+                    $succ1 = "Password  Updated";
+                }
+                else 
+                {
+                    $err = "Please Try Again Later";
+                }
+            #echo"<script>alert('Your Profile Has Been Updated Successfully');</script>";
+            }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +93,7 @@
           <h2 class="page-head-title">Profile </h2>
           <nav aria-label="breadcrumb" role="navigation">
             <ol class="breadcrumb page-head-nav">
-              <li class="breadcrumb-item"><a href="emp-dashboard.php">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="pass-dashboard.php">Dashboard</a></li>
               <li class="breadcrumb-item"><a href="#">Profile</a></li>
               <li class="breadcrumb-item active">Change Password | Profile Photo </li>
             </ol>
@@ -100,8 +134,8 @@
         <?php } ?>
         <div class="main-content container-fluid">
         <?php
-            $aid=$_SESSION['admin_id'];
-            $ret="select * from albosets_admin where admin_id=?";
+            $aid=$_SESSION['emp_id'];
+            $ret="select * from albosets_employee where emp_id=?";
             $stmt= $mysqli->prepare($ret) ;
             $stmt->bind_param('i',$aid);
             $stmt->execute() ;//ok
@@ -119,7 +153,7 @@
                     <div class="form-group row">
                       <label class="col-12 col-sm-3 col-form-label text-sm-right" for="inputText3">Select A New Profile Picture</label>
                       <div class="col-12 col-sm-8 col-lg-6">
-                        <input class="btn" name="admin_dpic"  id="inputText3" type="file">
+                        <input class="btn" name="emp_dpic"  id="inputText3" type="file">
                       </div>
                     </div>
                    
