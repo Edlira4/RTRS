@@ -1,0 +1,44 @@
+**ALBOSETS PROJECT!***
+
+**Database Name: albosetsphp**
+
+**Developed by Edlira Daku**
+
+**Recommended PHP Version: 5.6, 7.4, 8.1**
+
+
+**Admin Login Details**
+
+Email   : edlira2019@mail.com
+Password: 44224422
+
+**Employee Login Details**
+
+Email   : asokolaj@mail.com
+Password: 12345
+
+
+**Traveler/ANA's Login Details**
+
+Email   : aballa@mail.com
+Password: 23456
+
+
+**Traveler/ENESH's Login Details**
+
+Email   : eorazova@mail.com
+Password: 34567
+
+**Traveler/Brajan's Login Details**
+
+Email   : bxheku@mail.com
+Password: 45678
+
+**Traveler/Aida's Login Details**
+
+Email   : abitri@mail.com
+Password: 56789
+..... if more needed- contact creator at edaku21@epoka.edu.al
+
+
+
